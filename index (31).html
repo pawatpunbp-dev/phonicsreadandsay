@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>Phonics Read & Say – ฝึกเขียนคำอ่านและออกเสียง</title>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#fff8ec;--card:#ffffff;--ink:#2b2b3a;--muted:#7a7a8c;--pri:#ff7a45;--pri2:#ffb347;--ok:#2fb67c;--bad:#e5484d;--blue:#3d7bfd;--line:#f0e2c8}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;font-family:'Mali',system-ui,sans-serif;background:var(--bg);color:var(--ink);font-size:17px}
+.wrap{max-width:720px;margin:0 auto;padding:14px}
+h1{font-size:26px;margin:6px 0 2px;text-align:center}
+.sub{text-align:center;color:var(--muted);margin-bottom:14px}
+.card{background:var(--card);border-radius:20px;padding:16px;box-shadow:0 4px 0 var(--line);margin-bottom:14px;border:2px solid var(--line)}
+label{display:block;font-weight:600;margin:8px 0 4px}
+input[type=text],select{width:100%;font:inherit;padding:10px 12px;border-radius:12px;border:2px solid var(--line);background:#fffdf8}
+.row{display:flex;gap:10px}.row>*{flex:1}
+button{font:inherit;border:0;border-radius:14px;padding:11px 16px;cursor:pointer;font-weight:600}
+.btn{background:var(--pri);color:#fff;box-shadow:0 4px 0 #d85a28}
+.btn:active{transform:translateY(2px);box-shadow:0 2px 0 #d85a28}
+.btn2{background:#fff;color:var(--ink);border:2px solid var(--line)}
+.btn:disabled,.btn2:disabled{opacity:.4;cursor:default}
+.big{width:100%;font-size:20px;padding:14px}
+.warn{background:#fff1f0;border:2px solid #ffc9c5;color:#a8282d;border-radius:14px;padding:10px 12px;margin-bottom:12px;font-size:15px}
+.info{background:#eef4ff;border:2px solid #cfdcff;border-radius:14px;padding:10px 12px;font-size:15px}
+.top{display:flex;justify-content:space-between;align-items:center;font-size:15px;color:var(--muted);margin-bottom:6px}
+.bar{height:10px;background:#f3e6cc;border-radius:9px;overflow:hidden;margin-bottom:12px}
+.bar>div{height:100%;background:linear-gradient(90deg,var(--pri2),var(--pri));width:0;transition:width .3s}
+.word{font-size:58px;font-weight:700;text-align:center;letter-spacing:3px;margin:4px 0 0;font-family:'Mali',Arial,sans-serif}
+.word span{padding:0 1px;border-bottom:5px solid transparent}
+.mean{text-align:center;color:var(--muted);margin-bottom:10px}
+.steplbl{font-weight:700;margin:10px 0 6px;display:flex;align-items:center;gap:8px}
+.num{display:inline-flex;width:28px;height:28px;border-radius:50%;background:var(--pri);color:#fff;align-items:center;justify-content:center;font-size:15px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.chip{border-radius:12px;padding:6px 10px;font-size:16px;border:2px solid;background:#fff}
+.chip b{font-family:Arial,sans-serif}
+.note{font-size:14px;color:#8a5a00;background:#fff6dc;border-radius:10px;padding:6px 10px;margin-top:8px;text-align:center}
+.ans{min-height:64px;border:3px dashed #ffcf9e;border-radius:16px;font-size:40px;text-align:center;padding:4px;background:#fffaf2;letter-spacing:2px}
+.ans.ok{border-color:var(--ok);background:#ecfbf3}.ans.bad{border-color:var(--bad);background:#fff1f0}
+.keys{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:10px 0}
+.key{min-width:58px;height:58px;font-size:30px;background:#fff;border:2px solid #ffd9b0;box-shadow:0 3px 0 #ffd9b0;border-radius:14px;padding:0 8px}
+.key:active{transform:translateY(2px);box-shadow:0 1px 0 #ffd9b0}
+.ctrl{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+.msg{text-align:center;min-height:26px;margin:8px 0;font-weight:600}
+.msg.ok{color:var(--ok)}.msg.bad{color:var(--bad)}
+.mic{width:110px;height:110px;border-radius:50%;font-size:46px;background:var(--blue);color:#fff;box-shadow:0 5px 0 #2559c9;display:block;margin:6px auto}
+.mic.rec{background:var(--bad);box-shadow:0 5px 0 #a8282d;animation:pulse 1s infinite}
+@keyframes pulse{50%{transform:scale(1.07)}}
+.heard{text-align:center;color:var(--muted);font-size:15px;min-height:22px}
+.tries{text-align:center;font-size:14px;color:var(--muted)}
+.hide{display:none!important}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{border-bottom:1px solid var(--line);padding:5px 4px;text-align:left;vertical-align:middle}
+th{background:#fff3df}
+.score{display:flex;gap:10px;text-align:center}.score>div{flex:1;background:#fff8ec;border-radius:14px;padding:8px}
+.score b{display:block;font-size:26px}
+.flag{background:#fff6dc}
+.tp{font-size:13px;padding:4px 8px;border-radius:9px;background:var(--ok);color:#fff}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.45);display:flex;align-items:flex-start;justify-content:center;padding:16px;overflow:auto;z-index:9}
+.modal .card{max-width:640px;width:100%}
+.chart{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:6px;font-size:14px}
+.chart div{background:#fff8ec;border-radius:9px;padding:5px 8px}
+.chart b{font-family:Arial,sans-serif}
+.small{font-size:13px;color:var(--muted)}
+.sets{display:flex;flex-direction:column;gap:8px;margin-top:6px}
+.setb{display:flex;align-items:center;gap:10px;text-align:left;background:#fff;border:2px solid var(--line);border-radius:14px;padding:9px 12px;font-weight:400}
+.setb .st{margin-left:auto;font-size:13px;white-space:nowrap;border-radius:9px;padding:3px 8px;background:#f3f0ea;color:var(--muted)}
+.setb.go .st{background:#fff1d6;color:#b26b00}.setb.done .st{background:#e3f8ee;color:#1d8a5a}
+.setb .ex{font-size:13px;color:var(--muted)}
+.homeb{padding:6px 10px;font-size:14px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- START -->
+<div id="sStart">
+  <h1>🗣️ Phonics Read &amp; Say</h1>
+  <div class="sub">เทียบเสียง ✏️ เขียนคำอ่าน 🎤 ออกเสียงให้เครื่องฟัง</div>
+  <div id="lineWarn" class="warn hide">กำลังเปิดในแอป LINE — ไมโครโฟนอาจใช้ไม่ได้ ให้แตะ ⋮ / ไอคอนแชร์ แล้วเลือก <b>เปิดในเบราว์เซอร์</b> (Chrome หรือ Safari)</div>
+  <div id="srWarn" class="warn hide">เบราว์เซอร์นี้ตรวจการออกเสียงไม่ได้ แนะนำให้เปิดด้วย <b>Google Chrome</b> (ถ้าทำต่อ คำที่ต้องออกเสียงจะไปอยู่ในรายการ “ครูฟัง”)</div>
+  <div class="card">
+    <label>ชื่อ - นามสกุล</label><input type="text" id="inName" placeholder="เช่น ด.ญ.ใจดี มีสุข">
+    <div class="row">
+      <div><label>เลขที่</label><input type="text" id="inNo" inputmode="numeric"></div>
+      <div><label>ชั้น</label><input type="text" id="inClass" placeholder="เช่น 4/1"></div>
+    </div>
+  </div>
+  <div class="card">
+    <b>📚 เลือกชุดคำศัพท์</b> <span class="small">ทำชุดไหนก่อนก็ได้ ทำค้างไว้แล้วสลับไปชุดอื่นได้ ระบบจำไว้ให้ทุกชุด</span>
+    <div class="sets" id="setGrid"></div>
+  </div>
+  <div class="card info">
+    <b>วิธีเล่น (แต่ละคำ)</b><br>
+    1️⃣ ดูชิปสี — คำถูกแยกเป็นเสียง ๆ พร้อมเสียงไทยจากตารางเทียบเสียง<br>
+    2️⃣ แตะตัวอักษรไทยเรียงเป็นคำอ่าน (ระวัง! สระ เ แ โ ไ วางหน้าพยัญชนะ) — ตอบได้ 3 ครั้ง<br>
+    3️⃣ กดไมค์ 🎤 แล้วพูดคำศัพท์ชัด ๆ — พูดได้ 3 ครั้ง<br>
+    🏠 กดปุ่ม <b>หน้าหลัก</b> ได้ตลอด ระบบบันทึกให้อัตโนมัติ กลับมาแตะชุดเดิม (ใช้ชื่อเดิม เครื่องเดิม) จะทำต่อจากคำล่าสุด<br>จบชุดแล้ว <b>แคปหน้าจอรายงานคะแนน</b> ส่งครู
+  </div>
+</div>
+
+<!-- PLAY -->
+<div id="sPlay" class="hide">
+  <div class="top"><button class="btn2 homeb" id="bHome">🏠 หน้าหลัก</button><span id="tSet" style="flex:1;text-align:center;padding:0 6px"></span><span id="tCount"></span></div>
+  <div class="bar"><div id="prog"></div></div>
+  <div class="card">
+    <div class="word" id="wWord"></div>
+    <div class="mean" id="wMean"></div>
+
+    <div class="steplbl"><span class="num">1</span> เทียบเสียงทีละส่วน <button class="btn2" id="bChart" style="margin-left:auto;padding:6px 10px;font-size:14px">📋 ตารางเทียบเสียง</button></div>
+    <div class="chips" id="wChips"></div>
+    <div class="note hide" id="wNote"></div>
+
+    <div id="pWrite">
+      <div class="steplbl"><span class="num">2</span> แตะตัวอักษรเรียงเป็นคำอ่าน</div>
+      <div class="ans" id="ans"></div>
+      <div class="keys" id="keys"></div>
+      <div class="ctrl">
+        <button class="btn2" id="bBack">⌫ ลบ</button>
+        <button class="btn2" id="bClear">ล้าง</button>
+        <button class="btn" id="bCheck">ตรวจคำอ่าน ✔</button>
+      </div>
+      <div class="msg" id="wMsg"></div>
+      <div class="tries" id="wTries"></div>
+    </div>
+
+    <div id="pSpeak" class="hide">
+      <div class="steplbl"><span class="num">3</span> กดไมค์ แล้วพูดคำว่า <span id="sayWord" style="font-family:Arial;color:var(--blue)"></span></div>
+      <button class="mic" id="bMic">🎤</button>
+      <div class="heard" id="heard"></div>
+      <div class="msg" id="sMsg"></div>
+      <div class="tries" id="sTries"></div>
+      <div class="ctrl" style="margin-top:8px">
+        <button class="btn2" id="bListen" disabled>🔊 ฟังเสียงตัวอย่าง</button>
+        <button class="btn2 hide" id="bSkip">ข้าม (ให้ครูฟัง)</button>
+        <button class="btn hide" id="bNext">คำถัดไป ➜</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- REPORT -->
+<div id="sReport" class="hide">
+  <div class="top"><button class="btn2 homeb" id="bHome2">🏠 หน้าหลัก</button><span></span></div>
+  <h1>📝 Score Report</h1>
+  <div class="card">
+    <div id="rHead" style="margin-bottom:10px"></div>
+    <div class="score">
+      <div>✏️ เขียนคำอ่าน<b id="rW"></b></div>
+      <div>🎤 ออกเสียง<b id="rS"></b></div>
+      <div>⭐ รวม<b id="rT"></b></div>
+    </div>
+  </div>
+  <div class="card" id="flagCard">
+    <b>👂 คำที่ครูต้องฟังเอง</b> <span class="small">(เครื่องฟังไม่ผ่าน / ข้าม)</span>
+    <div id="rFlags" style="margin:6px 0;font-size:20px;font-family:Arial"></div>
+    <div class="small">ครู: ให้นักเรียนอ่านเฉพาะคำเหล่านี้ ถ้าออกเสียงถูก ใส่รหัสครูแล้วกด “ให้ผ่าน” ในตาราง</div>
+    <div class="row" style="margin-top:6px"><input type="text" id="pin" inputmode="numeric" placeholder="รหัสครู"><button class="btn2" id="bPin" style="flex:0 0 auto">ปลดล็อก</button></div>
+  </div>
+  <div class="card">
+    <table><thead><tr><th>คำ</th><th>คำอ่านที่เขียน</th><th>✏️</th><th>🎤</th></tr></thead><tbody id="rTable"></tbody></table>
+    <div class="small" style="margin-top:6px">✏️ ถูกครั้งแรก 2 · ถูกครั้งที่ 2–3 ได้ 1 &nbsp; 🎤 ผ่านครั้งแรก 2 · ผ่านครั้งที่ 2–3 ได้ 1 · ครูให้ผ่าน 2</div>
+  </div>
+  <div class="ctrl"><button class="btn" id="bAgain">🏠 หน้าหลัก / ทำชุดอื่น</button><button class="btn2 hide" id="bRedo">🔄 ให้ทำชุดนี้ใหม่ (ครู)</button></div>
+</div>
+
+<!-- CHART MODAL -->
+<div class="modal hide" id="mChart"><div class="card">
+  <div style="display:flex;justify-content:space-between;align-items:center"><b>📋 ตารางเทียบเสียง อังกฤษ – ไทย</b><button class="btn2" id="bCloseChart">ปิด ✕</button></div>
+  <div class="steplbl">สระ</div><div class="chart" id="cV"></div>
+  <div class="steplbl">พยัญชนะคู่</div><div class="chart" id="cD"></div>
+  <div class="steplbl">ตัวอักษร</div><div class="chart" id="cL"></div>
+  <div class="small" style="margin-top:8px">ตารางนี้เป็นแบบเทียบเสียงเบื้องต้น ตัวอักษรบางตัวออกเสียงได้หลายแบบ ขึ้นอยู่กับคำ</div>
+</div></div>
+
+</div>
+<script>
+/* ===== ตั้งค่าสำหรับครู ===== */
+const TEACHER_PIN = "2569";   // รหัสครูสำหรับกด "ให้ผ่าน" ในหน้ารายงาน
+
+/* ===== ตารางเทียบเสียง (จากใบความรู้) ===== */
+const LETTER={a:'แอ, เอ, อะ, อา',b:'บ',c:'ค, ซ',d:'ด, ฎ',e:'เอ, อี',f:'ฟ, ฝ',g:'ก, จ',h:'ฮ, ห',i:'อิ, ไอ',j:'จ, ย',k:'ค, ก',l:'ล, ฬ',m:'ม',n:'น, ณ',o:'โ, ออ',p:'พ, ภ, ป, ผ',q:'คว',r:'ร, ฤ',s:'ซ, ส, ศ, ษ',t:'ท, ต, ถ, ธ, ฒ',u:'อั, อุ, อู',v:'ว',w:'ว',x:'กซ, ซ',y:'ย, ญ, ไอ, อิ',z:'ซ'};
+const VOWEL={a:'แอ ( แ- )',e:'เอ ( เ- )',i:'อิ ( -ิ )',o:'ออ ( -อ )',u:'อั, อุ, อู',y:'อาย, อี',ay:'เอ ( เ- )',ar:'อา ( -า )',oo:'อุ, อู',ea:'อี',ee:'อี',ear:'เอีย',or:'ออ ( -อ )',ow:'อาว, เอา',ou:'อาว, เอา',er:'เออ ( เ-อ )',ir:'เออ ( เ-อ )',ur:'เออ ( เ-อ )','a-e':'เอ ( เ- )','i-e':'ไอ ( ไ- )','o-e':'โอ ( โ- )',air:'แอ ( แ- )',oy:'ออย'};
+const DIGRAPH={ch:'ช, ฉ, จ',ce:'ซ',ng:'ง',nk:'งค์',ck:'ค',ph:'ฟ, ผ, ฝ',th:'ท, ธ, ด',wh:'ว, ฮ',kh:'ข, ค',ve:'ฟ',qu:'คว',se:'ซ',wr:'ร',kn:'น',sh:'ช',ll:'ล',ss:'ส, ซ',gg:'ก'};
+
+/* ===== คำศัพท์: คำ|ความหมาย|คำอ่าน|คำอ่านที่รับได้เพิ่ม(คั่นด้วย ,)|หมายเหตุ ===== */
+const SETS=[
+{t:'สระ a (แอ)',ex:'an = แอน, man = แมน',w:`at|ที่|แอท
+bat|ค้างคาว|แบท
+cat|แมว|แคท
+man|ผู้ชาย|แมน
+rat|หนู|แรท
+mat|เสื่อ|แมท
+hat|หมวก|แฮท
+hand|มือ|แฮนด
+sad|เศร้า|แซด
+can|สามารถ|แคน
+fan|พัด|แฟน
+fat|อ้วน|แฟท
+land|ที่ดิน|แลนด
+pan|กระทะ|แพน
+tan|สีน้ำตาลไหม้|แทน
+van|รถตู้|แวน
+gas|แก๊ส|แกส
+fax|แฟกซ์|แฟกซ
+wax|ขี้ผึ้ง|แวกซ
+tap|ก๊อกน้ำ|แทพ
+ass|ลา (ชื่อสัตว์)|แอส
+map|แผนที่|แมพ
+tax|ภาษี|แทกซ
+pack|ห่อของ|แพค`},
+{t:'สระ e (เอ)',ex:'en = เอน, pen = เพน',w:`egg|ไข่|เอก|เอกก
+ten|สิบ|เทน
+hen|แม่ไก่|เฮน
+pen|ปากกา|เพน
+bed|เตียง|เบด
+red|สีแดง|เรด
+get|ได้รับ|เกท
+sell|ขาย|เซล
+let|อนุญาต|เลท
+pet|สัตว์เลี้ยง|เพท
+wet|เปียก|เวท
+set|จัด, ชุด|เซท
+left|ซ้าย|เลฟท
+desk|โต๊ะ|เดสค
+help|ช่วย|เฮลพ
+end|จบ|เอนด
+lend|ให้ยืม|เลนด
+tell|บอก|เทล
+send|ส่ง|เซนด
+rent|ให้เช่า|เรนท
+went|ไปแล้ว|เวนท
+sent|ส่งแล้ว|เซนท
+yes|ใช่ ครับ ค่ะ|เยส
+men|ผู้ชายหลายคน|เมน`},
+{t:'สระ i (อิ)',ex:'in = อิน, pin = พิน',w:`in|ใน|อิน
+pin|เข็มหมุด|พิน
+sin|บาป|ซิน
+bin|ถังขยะ|บิน
+win|ชนะ|วิน
+it|มัน|อิท
+sit|นั่ง|ซิท
+mix|ผสม|มิกซ
+rid|กำจัด|ริด
+fish|ปลา|ฟิช
+fit|เหมาะ|ฟิท
+fix|ซ่อม, ติด|ฟิกซ
+fin|ครีบ|ฟิน
+is|เป็น อยู่ คือ|อิซ|อิส|s ในคำนี้ออกเสียง ซ
+big|ใหญ่|บิก
+ring|แหวน|ริง
+sing|ร้องเพลง|ซิง
+bring|นำมา|บริง
+thing|สิ่งของ|ทิง|ธิง
+think|คิด|ทิงค|ธิงค
+kiss|จูบ|คิส|คิซ
+kick|เตะ|คิค
+thin|ผอม|ทิน|ธิน
+king|พระราชา|คิง`},
+{t:'สระ o (ออ)',ex:'ox = ออกซ, box = บอกซ',w:`ox|วัว (ตัวผู้)|ออกซ
+box|กล่อง|บอกซ
+on|บน|ออน
+not|ไม่|นอท
+dog|สุนัข|ดอก
+pot|หม้อ|พอท
+of|ของ|ออฟ|ออว|f ในคำนี้ออกเสียงคล้าย ว/ฟ
+song|เพลง|ซอง
+lock|ใส่กุญแจ|ลอค
+rock|หิน|รอค
+top|สุดยอด, ลูกข่าง|ทอพ
+mop|ไม้ถูพื้น|มอพ
+clock|นาฬิกาแขวน|คลอค
+long|ยาว|ลอง
+bomb|ระเบิด|บอม|บอมบ|b ตัวท้ายไม่ออกเสียง
+dot|จุด|ดอท
+front|ข้างหน้า|ฟรันท||o ในคำนี้ออกเสียง อั (คำพิเศษ)
+job|งาน|จอบ
+toy|ของเล่น|ทอย||oy ออกเสียง ออย
+doll|ตุ๊กตา|ดอล
+rob|ปล้น|รอบ
+god|พระเจ้า|กอด
+golf|กีฬากอล์ฟ|กอลฟ
+loss|การสูญเสีย|ลอส`},
+{t:'สระ u (อั)',ex:'un = อัน, sun = ซัน',w:`un|ไม่|อัน
+sun|พระอาทิตย์|ซัน
+run|วิ่ง|รัน
+gun|ปืน|กัน
+fun|สนุก|ฟัน
+hunt|ล่าสัตว์|ฮันท
+hut|กระท่อม|ฮัท
+cut|ตัด|คัท
+pup|ลูกสุนัข|พัพ
+but|แต่|บัท
+bus|รถยนต์โดยสาร|บัส
+must|ต้อง|มัสท
+up|ขึ้น|อัพ
+us|พวกเรา|อัส
+cub|ลูกสิงโต|คับ
+dust|ฝุ่น|ดัสท
+duck|เป็ด|ดัค
+luck|โชคดี|ลัค
+dun|ไม้|ดัน
+dung|มูลสัตว์|ดัง
+cup|ถ้วย|คัพ
+gum|กาว|กัม
+gush|ไหลพุ่ง|กัช
+lunch|อาหารกลางวัน|ลันช`},
+{t:'สระ y (อาย)',ex:'my = มาย, shy = ชาย',w:`my|ของฉัน|มาย
+by|โดย|บาย
+why|ทำไม|วาย
+fly|บิน|ฟลาย
+cry|ร้องไห้|คราย
+fry|ทอด|ฟราย
+shy|ขี้อาย|ชาย
+try|พยายาม|ทราย
+dry|ตากแห้ง|ดราย
+spy|สอดแนม|สปาย`},
+{t:'สระ ay (เอ)',ex:'day = เด, say = เซ',w:`day|วัน|เด
+say|พูด|เซ
+pay|จ่าย|เพ
+may|อาจจะ|เม
+gay|สนุกสนาน|เก
+play|เล่น|เพล
+pray|สวดมนต์|เพร
+tray|ถาด|เทร
+bay|อ่าว|เบ`},
+{t:'สระ ar (อา)',ex:'car = คา, park = พาค',w:`car|รถยนต์|คา
+bar|ที่ขายเครื่องดื่ม|บา
+far|ไกล|ฟา
+card|ไพ่, บัตรแข็ง|คาด
+cart|เกวียน|คาท
+dark|มืด|ดาค
+hard|หนัก|ฮาด
+park|สวนสาธารณะ|พาค
+sharp|คม|ชาพ
+farm|ไร่นา|ฟาม`},
+{t:'สระ oo (อุ/อู)',ex:'room = รูม, moon = มูน',w:`book|หนังสือ|บุค
+cook|ปรุงอาหาร|คุค
+look|มองดู|ลุค
+took|เอาไปแล้ว|ทุค
+food|อาหาร|ฟูด
+good|ดี|กุด
+foot|เท้า|ฟุท
+room|ห้อง|รูม
+soon|เร็ว ๆ นี้|ซูน`},
+{t:'สระ ea (อี)',ex:'eat = อีท, meat = มีท',w:`eat|กิน|อีท
+meat|เนื้อ|มีท
+sea|ทะเล|ซี
+tea|น้ำชา|ที
+weak|อ่อนแอ|วีค
+mean|หมายความว่า|มีน
+team|คณะผู้เล่น|ทีม
+bean|ถั่ว|บีน
+heat|ความร้อน|ฮีท
+beach|หาดทราย|บีช`},
+{t:'สระ ee (อี)',ex:'see = ซี, week = วีค',w:`see|พบ เห็น|ซี
+fee|ค่าธรรมเนียม|ฟี
+bee|ผึ้ง|บี
+free|ว่าง อิสระ|ฟรี
+feed|ให้อาหารสัตว์|ฟีด
+seek|เสาะหา|ซีค
+meet|พบ|มีท
+week|สัปดาห์|วีค
+green|เขียว|กรีน`},
+{t:'สระ ear (เอีย)',ex:'ear = เอีย, hear = เฮีย',w:`ear|หู|เอีย
+year|ปี|เยีย
+dear|ที่รัก|เดีย
+near|ใกล้|เนีย
+hear|ได้ยิน|เฮีย
+fear|กลัว|เฟีย
+sear|ทำให้ไหม้เกรียม|เซีย
+gear|เกียร์|เกีย
+tear|น้ำตา|เทีย
+clear|ใส ชัดเจน|เคลีย`},
+{t:'สระ or (ออ)',ex:'for = ฟอ, born = บอน',w:`or|หรือ|ออ
+for|สำหรับ|ฟอ
+nor|และไม่|นอ
+corn|ข้าวโพด|คอน
+born|เกิด|บอน
+form|รูปแบบ|ฟอม
+fork|ส้อม คราด|ฟอค
+horse|ม้า|ฮอส
+pork|เนื้อหมู|พอค`},
+{t:'สระ ow, ou (อาว)',ex:'how = ฮาว, town = ทาวน',w:`now|ขณะนี้|นาว
+how|อย่างไร|ฮาว
+down|ต่ำลง|ดาวน|ดาว
+town|เมือง|ทาวน|ทาว
+cow|วัว|คาว
+crown|มงกุฎ|คราวน|คราว
+house|บ้าน|เฮาส|ฮาวส
+cloud|เมฆ|คลาวด
+ground|สนาม ดิน|กราวนด|กราวด`},
+{t:'สระ er, ir, ur (เออ)',ex:'her = เฮอ, under = อันเดอ',w:`her|หล่อน|เฮอ
+term|ภาคเรียน|เทิม|เทอม|เออ + ตัวสะกด เขียนได้ทั้ง เ-อ และ เ-ิ
+nurse|พยาบาล|เนิส|เนอส
+burn|เผาไหม้|เบิน|เบอน
+sir|ครับ ค่ะ|เซอ
+first|ที่หนึ่ง|เฟิสท|เฟอสท
+firm|บริษัท มั่นคง|เฟิม|เฟอม
+turn|เลี้ยว หมุน|เทิน|เทอน
+confirm|ยืนยัน|คอนเฟิม|คอนเฟอม
+under|ใต้|อันเดอ`},
+{t:'สระ a-e (เอ)',ex:'ate = เอท, same = เซม',w:`ate|กิน (อดีต)|เอท
+late|สาย|เลท
+date|วันที่, นัด|เดท
+hate|เกลียด|เฮท
+gate|ประตูรั้ว|เกท
+name|ชื่อ|เนม
+same|เหมือนกัน|เซม
+game|เกม กีฬา|เกม
+blame|ตำหนิ ติเตียน|เบลม
+make|ผลิต ทำ|เมค`},
+{t:'สระ i-e (ไอ)',ex:'like = ไลค, line = ไลน',w:`like|ชอบ|ไลค
+line|เส้น|ไลน
+nine|เก้า (๙)|ไนน
+mine|ของฉัน|ไมน
+shine|ส่องแสง|ไชน
+wife|ภรรยา|ไวฟ
+kite|ว่าว|ไคท
+write|เขียน|ไรท
+knife|มีด|ไนฟ`},
+{t:'สระ o-e (โอ)',ex:'note = โนท, rose = โรส',w:`note|บันทึก|โนท
+nose|จมูก|โนส
+code|รหัส|โคด
+vote|ลงคะแนน|โวท
+rope|เชือก|โรพ
+rose|กุหลาบ|โรส
+home|บ้าน|โฮม`},
+{t:'สระ air (แอ)',ex:'air = แอ, fair = แฟ',w:`air|อากาศ|แอ
+fair|ยุติธรรม งาม|แฟ
+chair|เก้าอี้|แช
+pair|คู่|แพ
+hair|เส้นผม|แฮ`}
+].map((s,i)=>({...s,title:'ชุดที่ '+(i+1)+' '+s.t,words:s.w.trim().split('\n').map(l=>{const p=l.split('|');return{en:p[0].trim(),th:p[1].trim(),read:p[2].trim(),alts:(p[3]||'').split(',').map(x=>x.trim()).filter(Boolean),note:(p[4]||'').trim()}})}));
+
+/* ===== คำพ้องเสียง ที่ระบบฟังแล้วอาจพิมพ์ออกมาต่างไป ===== */
+const HOMO={sun:['son'],sea:['see','c'],see:['sea','c'],tea:['tee','t'],meat:['meet'],meet:['meat'],by:['bye','buy','bi'],why:['y'],hear:['here'],dear:['deer'],tear:['tier'],for:['four','fore','4'],or:['oar','ore'],write:['right','rite'],ate:['eight','8'],pair:['pear','pare'],hair:['hare'],fair:['fare'],air:['heir'],week:['weak'],weak:['week'],sear:['seer','cere'],rose:['rows'],nose:['knows'],not:['knot'],in:['inn'],bin:['been'],ten:['10'],nine:['9'],red:['read'],sell:['cell'],sent:['cent','scent'],wet:['whet'],bee:['be','b'],mean:['mien'],team:['teem'],beach:['beech'],seek:['sikh'],born:['borne'],horse:['hoarse'],pray:['prey'],bay:['bey'],ring:['wring'],lock:['loch'],bomb:['balm','bom'],hut:['hutt'],but:['butt'],dun:['done'],bus:['buss'],mat:['matt'],pack:['pac','pak'],tax:['tacks'],wax:['whacks'],fax:['facts'],box:['bocks'],cart:['kart'],sir:['sur'],burn:['bern'],turn:['tern'],doll:['dahl','dol'],un:['un'],may:['mae'],fee:['fe'],no:['know'],toy:['toi'],cub:['cubb'],rob:['robb'],dung:['dong'],gush:['gosh'],hen:['hn'],tan:['tann'],fin:['finn'],pup:['pupp'],king:['kings'],sin:['seen'],ox:['ox','oxs'],an:['and'],at:['@']};
+
+/* ===== ตัวช่วย ===== */
+const $=id=>document.getElementById(id);
+const MARKS=/[็-๎\s]/g;           // ไม้ไต่คู้ วรรณยุกต์ การันต์ ช่องว่าง
+const norm=s=>(s||'').replace(MARKS,'');
+const LEAD='เแโใไ';
+const SWAP=[['ท','ต'],['ค','ก'],['พ','ป'],['ส','ซ']];
+function variants(r){
+  r=norm(r);const out=new Set([r]);const chars=[...r];
+  const pos=[chars.length-1,chars.length-2];
+  let fi=0;while(fi<chars.length&&(LEAD.includes(chars[fi])))fi++;
+  if(chars[fi]==='ซ'||chars[fi]==='ส')pos.push(fi);
+  let list=[chars];
+  pos.forEach(p=>{if(p<0)return;const nl=[];list.forEach(c=>{nl.push(c);const g=SWAP.find(g=>g.includes(c[p]));if(g)g.forEach(x=>{if(x!==c[p]){const cc=[...c];cc[p]=x;nl.push(cc)}})});list=nl});
+  list.forEach(c=>out.add(c.join('')));return out;
+}
+function accepted(w){const s=new Set();[w.read,...w.alts].forEach(r=>variants(r).forEach(v=>s.add(v)));return s}
+
+/* แยกคำเป็นเสียงตามตาราง */
+const TEAMS=['ear','air','ay','ar','oo','ea','ee','or','ow','ou','er','ir','ur','oy'];
+const DIGS=['ch','sh','th','ph','wh','ck','ng','nk','kn','wr','qu','ll','ss','gg'];
+const isV=c=>'aeiou'.includes(c);
+function chunks(word){
+  const w=word.toLowerCase(),n=w.length,res=[],used=new Array(n).fill(false);
+  // magic e
+  let magic=-1;
+  if(n>=3&&w[n-1]==='e'&&'aio'.includes(w[n-3])&&!isV(w[n-2])&&!(n>=4&&isV(w[n-4]))) magic=n-3;
+  let i=0;
+  while(i<n){
+    if(i===magic){res.push({key:w[i]+'-e',idx:[i,n-1],type:'v'});i++;continue}
+    if(magic>=0&&i===n-1){i++;continue}
+    let hit=null;
+    for(const t of TEAMS){if(w.startsWith(t,i)&&!(t==='ay'&&false)){hit={key:t,type:'v'};break}}
+    if(!hit&&i===n-2&&(w.endsWith('se')||w.endsWith('ce'))&&i>0)hit={key:w.slice(i),type:'c'};
+    if(!hit)for(const d of DIGS){if(w.startsWith(d,i)){hit={key:d,type:'c'};break}}
+    if(hit){res.push({key:hit.key,idx:[...Array(hit.key.length).keys()].map(k=>k+i),type:hit.type});i+=hit.key.length;continue}
+    const c=w[i];
+    if(c==='y')res.push({key:'y',idx:[i],type:i===0?'c':'v'});
+    else res.push({key:c,idx:[i],type:isV(c)?'v':'c'});
+    i++;
+  }
+  return res;
+}
+function chunkThai(ch){
+  if(ch.type==='v')return VOWEL[ch.key]||LETTER[ch.key]||'';
+  return DIGRAPH[ch.key]||LETTER[ch.key]||'';
+}
+const COLORS=['#ff7a45','#3d7bfd','#2fb67c','#b04fe0','#e0a800','#e5484d','#0aa5b8'];
+
+/* ===== สถานะ ===== */
+let S=null;
+const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+
+/* ===== หน้าเริ่ม ===== */
+if(/Line\//i.test(navigator.userAgent))$('lineWarn').classList.remove('hide');
+if(!SR)$('srWarn').classList.remove('hide');
+
+function startSet(setIdx){
+  const name=$('inName').value.trim();
+  if(!name){$('inName').focus();$('inName').style.borderColor='#e5484d';$('inName').scrollIntoView({block:'center'});$('inName').placeholder='พิมพ์ชื่อก่อนเลือกชุดนะ';return}
+  rememberUser();
+  const k=keyOf(name,setIdx),st=getStore();
+  if(st[k]){openSaved(k);return}
+  const set=SETS[setIdx];
+  S={key:k,name,no:$('inNo').value.trim(),cls:$('inClass').value.trim(),setIdx,set,i:0,done:false,
+     res:set.words.map(w=>({w,first:'',final:'',wTry:0,wPts:0,sTry:0,sPts:0,flag:false,teacher:false,wDone:false,sDone:false}))};
+  save();show('sPlay');loadWord();
+}
+/* ===== บันทึกความคืบหน้า (เก็บในเบราว์เซอร์ของเครื่องนี้) ===== */
+const STORE='phonicsReadSay_v1';
+const keyOf=(n,i)=>n.replace(/\s+/g,'').toLowerCase()+'#'+i;
+function getStore(){try{return JSON.parse(localStorage.getItem(STORE))||{}}catch(e){return{}}}
+function putStore(o){try{localStorage.setItem(STORE,JSON.stringify(o))}catch(e){}}
+function save(){
+  if(!S)return;const st=getStore();
+  st[S.key]={name:S.name,no:S.no,cls:S.cls,setIdx:S.setIdx,i:S.i,done:S.done,date:S.date||'',t:Date.now(),
+    res:S.res.map(r=>({first:r.first,final:r.final,wTry:r.wTry,wPts:r.wPts,sTry:r.sTry,sPts:r.sPts,flag:r.flag,teacher:r.teacher,wDone:!!r.wDone,sDone:!!r.sDone}))};
+  putStore(st);
+}
+function openSaved(k){
+  const d=getStore()[k];if(!d)return;const set=SETS[d.setIdx];
+  S={key:k,name:d.name,no:d.no,cls:d.cls,setIdx:d.setIdx,set,i:d.i,done:d.done,date:d.date,
+     res:set.words.map((w,j)=>Object.assign({w},d.res[j]||{first:'',final:'',wTry:0,wPts:0,sTry:0,sPts:0,flag:false,teacher:false,wDone:false,sDone:false}))};
+  if(S.done||S.i>=S.res.length)report();else{show('sPlay');loadWord()}
+}
+/* หน้าหลัก: รายการทุกชุด พร้อมสถานะของชื่อที่กรอก */
+function drawSets(){
+  const name=$('inName').value.trim(),st=getStore();
+  $('setGrid').innerHTML='';
+  SETS.forEach((set,i)=>{
+    const d=name?st[keyOf(name,i)]:null,n=set.words.length,b=document.createElement('button');
+    let cls='setb',stt='ยังไม่เริ่ม';
+    if(d&&d.done){cls+=' done';stt='✅ ครบแล้ว · ดูคะแนน'}
+    else if(d){cls+=' go';stt='⏸ ทำแล้ว '+d.res.filter(r=>r.sDone).length+'/'+n+' · ทำต่อ'}
+    b.className=cls;b.innerHTML=`<div><b>${set.title}</b><div class="ex">${set.ex} · ${n} คำ</div></div><span class="st">${stt}</span>`;
+    b.onclick=()=>startSet(i);$('setGrid').appendChild(b);
+  });
+}
+const USER='phonicsReadSay_user';
+function rememberUser(){try{localStorage.setItem(USER,JSON.stringify({n:$('inName').value.trim(),no:$('inNo').value.trim(),c:$('inClass').value.trim()}))}catch(e){}}
+try{const u=JSON.parse(localStorage.getItem(USER));if(u){$('inName').value=u.n||'';$('inNo').value=u.no||'';$('inClass').value=u.c||''}}catch(e){}
+$('inName').addEventListener('input',()=>{$('inName').style.borderColor='';drawSets()});
+function goHome(){
+  if(listening&&rec){try{rec.abort()}catch(e){}}
+  try{speechSynthesis.cancel()}catch(e){}
+  if(S)save();S=null;unlocked=false;$('bPin').textContent='ปลดล็อก';
+  drawSets();show('sStart');
+}
+function show(id){['sStart','sPlay','sReport'].forEach(x=>$(x).classList.toggle('hide',x!==id));window.scrollTo(0,0)}
+
+/* ===== เล่นทีละคำ ===== */
+let typed=[];
+function loadWord(){
+  const r=S.res[S.i],w=r.w;
+  $('tSet').textContent=S.set.title;$('tCount').textContent='คำที่ '+(S.i+1)+' / '+S.res.length;
+  $('prog').style.width=(S.i/S.res.length*100)+'%';
+  const ch=chunks(w.en),colorOf=[];
+  ch.forEach((c,k)=>c.idx.forEach(ix=>colorOf[ix]=COLORS[k%COLORS.length]));
+  $('wWord').innerHTML=[...w.en].map((c,ix)=>`<span style="color:${colorOf[ix]};border-color:${colorOf[ix]}">${c}</span>`).join('');
+  $('wMean').textContent=w.th;
+  $('wChips').innerHTML=ch.map((c,k)=>{const col=COLORS[k%COLORS.length];const lab=c.key.includes('-e')?c.key.replace('-e','…e'):c.key;
+    return `<div class="chip" style="border-color:${col}"><b style="color:${col}">${lab}</b> = ${chunkThai(c)}</div>`}).join('');
+  $('wNote').textContent=w.note?'💡 '+w.note:'';$('wNote').classList.toggle('hide',!w.note);
+  // keys
+  const need=new Set();
+  [w.read,...w.alts].forEach(r=>[...norm(r)].forEach(c=>need.add(c)));
+  [...need].forEach(c=>{const g=SWAP.find(g=>g.includes(c));if(g&&c===[...norm(w.read)].slice(-1)[0])g.forEach(x=>need.add(x))});
+  const pool=['เ','แ','โ','ไ','า','ิ','ี','ุ','ู','ั','อ'].filter(c=>!need.has(c)).sort(()=>Math.random()-.5).slice(0,3);
+  const keys=[...need,...pool].sort(()=>Math.random()-.5);
+  $('keys').innerHTML='';
+  keys.forEach(c=>{const b=document.createElement('button');b.className='key';b.textContent=/[ัิ-ฺ]/.test(c)?'-'+c:c;b.onclick=()=>{if(r.wDone)return;typed.push(c);drawAns()};$('keys').appendChild(b)});
+  typed=[];drawAns();
+  $('ans').className='ans';$('wMsg').textContent='';$('wMsg').className='msg';
+  $('wTries').textContent=r.wTry?'เหลืออีก '+(3-r.wTry)+' ครั้ง':'ตอบได้ 3 ครั้ง';
+  ['bBack','bClear','bCheck'].forEach(b=>$(b).disabled=!!r.wDone);
+  $('pWrite').classList.remove('hide');$('pSpeak').classList.add('hide');
+  if(r.wDone){ // กลับมาทำต่อ: ขั้นเขียนเสร็จแล้ว ไปขั้นออกเสียงเลย
+    $('ans').textContent=r.wPts?r.final:w.read;$('ans').className='ans '+(r.wPts?'ok':'bad');$('wTries').textContent='';
+    startSpeak();
+  }
+}
+function drawAns(){$('ans').textContent=typed.join('')}
+$('bBack').onclick=()=>{typed.pop();drawAns()};
+$('bClear').onclick=()=>{typed=[];drawAns()};
+$('bCheck').onclick=()=>{
+  const r=S.res[S.i],w=r.w,a=norm(typed.join(''));
+  if(!a){$('wMsg').textContent='แตะตัวอักษรก่อนนะ';return}
+  r.wTry++;if(r.wTry===1)r.first=typed.join('');r.final=typed.join('');save();
+  if(accepted(w).has(a)){
+    r.wPts=r.wTry===1?2:1;$('ans').className='ans ok';
+    $('wMsg').className='msg ok';$('wMsg').textContent=r.wTry===1?'เยี่ยม! ถูกตั้งแต่ครั้งแรก 🎉 (+2)':'ถูกแล้ว 👍 (+1)';
+    endWrite();
+  }else{
+    $('ans').className='ans bad';$('wMsg').className='msg bad';
+    if(r.wTry>=3){$('wMsg').innerHTML='คำอ่านที่ถูกคือ <span style="font-size:26px">'+w.read+'</span>';$('ans').textContent=w.read;endWrite();return}
+    const sa=[...a].sort().join(''),ok=[...accepted(w)];
+    let hint='ยังไม่ถูก ลองเทียบชิปสีทีละเสียงอีกครั้ง';
+    if(ok.some(o=>[...o].sort().join('')===sa))hint='ตัวอักษรครบแล้ว แต่ลำดับยังไม่ถูก — สระ เ แ โ ไ ต้องวาง “หน้า” พยัญชนะต้น';
+    else if(ok.every(o=>o.length>a.length))hint='ยังขาดเสียง — นับชิปดูว่าครบทุกเสียงหรือยัง';
+    else if(ok.every(o=>o.length<a.length))hint='ตัวอักษรเกินมา — ลองลบตัวที่ไม่ใช่ออก';
+    $('wMsg').textContent=hint;$('wTries').textContent='เหลืออีก '+(3-r.wTry)+' ครั้ง';
+  }
+};
+function endWrite(){
+  const r=S.res[S.i];r.wDone=true;save();['bBack','bClear','bCheck'].forEach(b=>$(b).disabled=true);$('wTries').textContent='';
+  setTimeout(startSpeak,700);
+}
+
+/* ===== ออกเสียง ===== */
+let rec=null,listening=false;
+function startSpeak(){
+  if(!S||$('sPlay').classList.contains('hide'))return;
+  const r=S.res[S.i];
+  $('pSpeak').classList.remove('hide');$('sayWord').textContent=r.w.en;
+  $('heard').textContent='';$('sMsg').textContent='';$('sMsg').className='msg';
+  $('sTries').textContent=r.sTry?'เหลืออีก '+(3-r.sTry)+' ครั้ง':'พูดได้ 3 ครั้ง';
+  $('bListen').disabled=!r.sTry;$('bNext').classList.add('hide');$('bSkip').classList.toggle('hide',!r.sTry);$('bMic').disabled=false;$('bMic').style.opacity=1;
+  if(r.sDone){$('sMsg').textContent=r.flag?'คำนี้อยู่ในรายการให้ครูฟัง 👂':'ผ่านแล้ว 👍';finishSpeak();}
+  else if(!SR){r.flag=true;$('sMsg').className='msg bad';$('sMsg').textContent='อุปกรณ์นี้ตรวจเสียงไม่ได้ — คำนี้จะให้ครูฟัง';$('bMic').disabled=true;$('bMic').style.opacity=.4;finishSpeak();}
+  setTimeout(()=>$('pSpeak').scrollIntoView({behavior:'smooth',block:'center'}),100);
+}
+const tok=s=>s.toLowerCase().replace(/\*/g,'s').replace(/[^a-z0-9@ ]/g,' ').split(/\s+/).filter(Boolean);
+function matches(alts,target){
+  const ok=new Set([target,...(HOMO[target]||[])]);
+  return alts.some(a=>{const t=tok(a);return t.some(x=>ok.has(x))||ok.has(t.join(''))});
+}
+$('bMic').onclick=()=>{
+  if(listening){try{rec.stop()}catch(e){}return}
+  const r=S.res[S.i];if(r.sDone)return;
+  rec=new SR();rec.lang='en-US';rec.interimResults=false;rec.maxAlternatives=10;rec.continuous=false;
+  let got=false;
+  rec.onresult=e=>{got=true;const alts=[];for(const res of e.results)for(let k=0;k<res.length;k++)alts.push(res[k].transcript);judge(alts)};
+  rec.onerror=e=>{if(e.error==='not-allowed'||e.error==='service-not-allowed'){$('sMsg').className='msg bad';$('sMsg').textContent='ยังไม่ได้อนุญาตไมโครโฟน — แตะ “อนุญาต/Allow” แล้วลองใหม่';}};
+  rec.onend=()=>{listening=false;$('bMic').classList.remove('rec');$('bMic').textContent='🎤';
+    if(!got&&!r.sDone&&!$('sMsg').textContent.includes('อนุญาต')){$('heard').textContent='ไม่ได้ยินเสียง ลองกดแล้วพูดใหม่ (ไม่นับครั้ง)'}};
+  try{rec.start();listening=true;$('bMic').classList.add('rec');$('bMic').textContent='👂';$('heard').textContent='กำลังฟัง… พูดเลย';$('sMsg').textContent=''}
+  catch(e){$('heard').textContent='เริ่มไมค์ไม่ได้ ลองใหม่อีกครั้ง'}
+};
+function judge(alts){
+  const r=S.res[S.i];r.sTry++;save();
+  $('heard').textContent='เครื่องได้ยิน: “'+alts[0]+'”';
+  if(matches(alts,r.w.en.toLowerCase())){
+    r.sPts=r.sTry===1?2:1;$('sMsg').className='msg ok';$('sMsg').textContent=r.sTry===1?'ออกเสียงชัดมาก! 🌟 (+2)':'ผ่านแล้ว 👍 (+1)';finishSpeak();
+  }else{
+    $('sMsg').className='msg bad';
+    if(r.sTry>=3){r.flag=true;$('sMsg').textContent='ยังไม่ผ่าน — คำนี้จะอยู่ในรายการให้ครูฟัง 👂';finishSpeak();}
+    else{$('sMsg').textContent='ยังไม่ชัด ฟังเสียงตัวอย่างแล้วลองใหม่';$('sTries').textContent='เหลืออีก '+(3-r.sTry)+' ครั้ง';$('bListen').disabled=false;$('bSkip').classList.remove('hide');}
+  }
+}
+function finishSpeak(){
+  const r=S.res[S.i];r.sDone=true;save();$('sTries').textContent='';
+  $('bListen').disabled=false;$('bSkip').classList.add('hide');$('bNext').classList.remove('hide');
+  $('bNext').textContent=S.i===S.res.length-1?'ดูคะแนน 📝':'คำถัดไป ➜';
+}
+$('bSkip').onclick=()=>{const r=S.res[S.i];r.flag=true;$('sMsg').className='msg bad';$('sMsg').textContent='ข้ามแล้ว — คำนี้จะให้ครูฟัง 👂';finishSpeak()};
+$('bListen').onclick=()=>{
+  if(!window.speechSynthesis)return;const u=new SpeechSynthesisUtterance(S.res[S.i].w.en);u.lang='en-US';u.rate=.75;
+  const v=speechSynthesis.getVoices().find(v=>/^en(-|_)US/i.test(v.lang));if(v)u.voice=v;speechSynthesis.cancel();speechSynthesis.speak(u);
+};
+$('bNext').onclick=()=>{S.i++;save();if(S.i>=S.res.length)report();else loadWord()};
+
+/* ===== รายงานคะแนน ===== */
+let unlocked=false;
+function report(){
+  show('sReport');
+  if(!S.done){const d=new Date();S.done=true;S.date=d.toLocaleDateString('th-TH')+' '+d.toLocaleTimeString('th-TH',{hour:'2-digit',minute:'2-digit'});save()}
+  unlocked=false;$('bPin').textContent='ปลดล็อก';$('bRedo').classList.add('hide');
+  $('rHead').innerHTML=`<b>${esc(S.name)}</b> &nbsp;เลขที่ ${esc(S.no)||'-'} &nbsp;ชั้น ${esc(S.cls)||'-'}<br>${S.set.title}<br><span class="small">ทำเสร็จ ${S.date}</span>`;
+  drawReport();
+}
+function esc(s){return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
+function drawReport(){
+  const max=S.res.length*2;let w=0,s=0;
+  S.res.forEach(r=>{w+=r.wPts;s+=r.teacher?2:r.sPts});
+  $('rW').textContent=w+'/'+max;$('rS').textContent=s+'/'+max;$('rT').textContent=(w+s)+'/'+(max*2);
+  const flags=S.res.filter(r=>r.flag&&!r.teacher);
+  $('rFlags').textContent=flags.length?flags.map(r=>r.w.en).join(' · '):'ไม่มี 🎉';
+  $('rFlags').parentElement.querySelector('b').textContent=flags.length||S.res.some(r=>r.flag)?'👂 คำที่ครูต้องฟังเอง':'👩‍🏫 ส่วนของครู';
+  $('rTable').innerHTML=S.res.map((r,k)=>{
+    const wr=r.wPts===2?'✅':r.wPts===1?'🟡':'❌';
+    let sp=r.teacher?'✅ครู':r.flag?(unlocked?`<button class="tp" data-k="${k}">ให้ผ่าน</button>`:'👂'):r.sPts===2?'✅':'🟡';
+    return `<tr class="${r.flag&&!r.teacher?'flag':''}"><td style="font-family:Arial"><b>${r.w.en}</b></td><td>${esc(r.first)}${r.wPts!==2?' <span class="small">→ '+r.w.read+'</span>':''}</td><td>${wr}</td><td>${sp}</td></tr>`}).join('');
+  document.querySelectorAll('.tp').forEach(b=>b.onclick=()=>{S.res[b.dataset.k].teacher=true;save();drawReport()});
+}
+$('bPin').onclick=()=>{if($('pin').value.trim()===TEACHER_PIN){unlocked=true;$('pin').value='';$('bPin').textContent='ปลดล็อกแล้ว ✔';$('bRedo').classList.remove('hide');drawReport()}else{$('pin').style.borderColor='#e5484d'}};
+$('bAgain').onclick=goHome;$('bHome').onclick=goHome;$('bHome2').onclick=goHome;
+$('bRedo').onclick=()=>{if(!unlocked)return;const st=getStore();delete st[S.key];putStore(st);S=null;goHome()};
+drawSets();
+
+
+/* ===== ตารางเทียบเสียง ===== */
+const VKEYS=['a','e','i','o','u','y','ay','ar','oo','ea','ee','ear','or','ow','ou','er','ir','ur','a-e','i-e','o-e','air'];
+$('cV').innerHTML=VKEYS.map(k=>`<div><b>${k}</b> = ${VOWEL[k]}</div>`).join('');
+$('cD').innerHTML=['ch','ce','ng','nk','ck','ph','th','wh','kh','ve','qu','se','wr','kn'].map(k=>`<div><b>${k}</b> = ${DIGRAPH[k]}</div>`).join('');
+$('cL').innerHTML=Object.keys(LETTER).map(k=>`<div><b>${k.toUpperCase()} ${k}</b> = ${LETTER[k]}</div>`).join('');
+$('bChart').onclick=()=>$('mChart').classList.remove('hide');
+$('bCloseChart').onclick=()=>$('mChart').classList.add('hide');
+$('mChart').onclick=e=>{if(e.target.id==='mChart')$('mChart').classList.add('hide')};
+</script>
+</body>
+</html>
